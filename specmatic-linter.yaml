@@ -52,6 +52,11 @@ rules:
     maturity: bronze
 
 profiles:
+  default:
+    rules:
+      extends:
+        - recommended
+
   public-api:
     rules:
       extends:
@@ -70,9 +75,9 @@ profiles:
         operation-tag-defined: warn
 
   internal-api:
+    extends:
+      - default
     rules:
-      extends:
-        - recommended
       include:
         - rule/parameter-description-required
         - rule/no-legacy-version-header
