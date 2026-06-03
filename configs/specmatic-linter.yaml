@@ -1,0 +1,115 @@
+plugins:
+  - ../plugins/platform-rules/index.js
+
+rules:
+  rule/parameter-description-required:
+    severity: error
+    type: parameters
+    maturity: bronze
+    subject:
+      type: Parameter
+    assertions:
+      required:
+        - description
+    message: "Platform standard: Every parameter must have a description."
+
+  rule/security-scheme-modern:
+    severity: error
+    type: security
+    maturity: silver
+    subject:
+      type: SecurityScheme
+      property: type
+    assertions:
+      enum:
+        - oauth2
+        - openIdConnect
+    message: "Platform standard: Only OAuth2 or OpenID Connect security schemes are allowed."
+
+  rule/no-legacy-version-header:
+    severity: warn
+    type: parameters 
+    subject:
+      type: Parameter
+      property: name
+    assertions:
+      pattern: "^(?!X-API-Version$).*$"
+    message: "Platform standard: Avoid the legacy X-API-Version header."
+
+  platform/operation-id-convention:
+    severity: warn
+    type: operations
+    maturity: bronze
+
+  platform/error-response-problem-json:
+    severity: error
+    type: operations
+    maturity: silver
+
+  platform/pagination-bounds:
+    severity: warn
+    type: parameters
+    maturity: bronze
+
+profiles:
+  public-api:
+    extends:
+      - recommended
+    rules:
+      import:
+        - rule/parameter-description-required
+        - rule/security-scheme-modern
+        - platform/operation-id-convention
+        - platform/error-response-problem-json
+        - info-license
+        - info-contact
+        - operation-summary
+      config:
+        security-defined: error
+        operation-4xx-response: error
+        operation-tag-defined: warn
+
+  internal-api:
+    extends:
+      - recommended
+    rules:
+      import:
+        - rule/parameter-description-required
+        - rule/no-legacy-version-header
+        - platform/operation-id-convention
+      config:
+        operation-summary: warn
+        info-contact: off
+        info-license: off
+        security-defined:
+          severity: warn
+        operation-4xx-response: warn
+        parameter-description: error
+
+  payment-api:
+    extends:
+      - public-api
+    rules:
+      import:
+        - platform/pagination-bounds
+      config:
+        platform/operation-id-convention:
+          severity: error
+          type: operations
+          maturity: bronze
+        platform/error-response-problem-json:
+          severity: error
+          type: operations
+          maturity: gold
+        security-defined:
+          severity: error
+          type: security
+          maturity: gold
+        operation-4xx-problem-details-rfc7807:
+          severity: error
+          type: operations
+          maturity: gold
+        rule/security-scheme-modern:
+          severity: error
+          type: security
+          maturity: gold
