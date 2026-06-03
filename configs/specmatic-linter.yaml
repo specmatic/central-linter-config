@@ -28,7 +28,7 @@ rules:
 
   rule/no-legacy-version-header:
     severity: warn
-    type: parameters 
+    type: parameters
     subject:
       type: Parameter
       property: name
@@ -53,10 +53,10 @@ rules:
 
 profiles:
   public-api:
-    extends:
-      - recommended
     rules:
-      import:
+      extends:
+        - recommended
+      include:
         - rule/parameter-description-required
         - rule/security-scheme-modern
         - platform/operation-id-convention
@@ -64,23 +64,24 @@ profiles:
         - info-license
         - info-contact
         - operation-summary
-      config:
+      override:
         security-defined: error
         operation-4xx-response: error
         operation-tag-defined: warn
 
   internal-api:
-    extends:
-      - recommended
     rules:
-      import:
+      extends:
+        - recommended
+      include:
         - rule/parameter-description-required
         - rule/no-legacy-version-header
         - platform/operation-id-convention
-      config:
+      exclude:
+        - info-contact
+        - info-license
+      override:
         operation-summary: warn
-        info-contact: off
-        info-license: off
         security-defined:
           severity: warn
         operation-4xx-response: warn
@@ -90,9 +91,9 @@ profiles:
     extends:
       - public-api
     rules:
-      import:
+      include:
         - platform/pagination-bounds
-      config:
+      override:
         platform/operation-id-convention:
           severity: error
           type: operations
