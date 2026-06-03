@@ -1,5 +1,5 @@
 plugins:
-  - ../plugins/platform-rules/index.js
+  - ./plugins/platform-rules/index.js
 
 rules:
   rule/parameter-description-required:
