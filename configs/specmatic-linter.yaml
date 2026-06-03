@@ -114,3 +114,11 @@ profiles:
           severity: error
           type: security
           maturity: gold
+          subject:
+            type: SecurityScheme
+            property: type
+          assertions:
+            enum:
+              - oauth2
+              - openIdConnect
+          message: "Platform standard: Only OAuth2 or OpenID Connect security schemes are allowed."
