@@ -6,9 +6,9 @@ rules:
     severity: error
     type: parameters
     maturity: bronze
-    subject:
+    on:
       type: Parameter
-    assertions:
+    must:
       required:
         - description
     message: "Platform standard: Every parameter must have a description."
@@ -17,10 +17,10 @@ rules:
     severity: error
     type: security
     maturity: silver
-    subject:
+    on:
       type: SecurityScheme
       property: type
-    assertions:
+    must:
       enum:
         - oauth2
         - openIdConnect
@@ -29,10 +29,10 @@ rules:
   rule/no-legacy-version-header:
     severity: warn
     type: parameters
-    subject:
+    on:
       type: Parameter
       property: name
-    assertions:
+    must:
       pattern: "^(?!X-API-Version$).*$"
     message: "Platform standard: Avoid the legacy X-API-Version header."
 
@@ -119,10 +119,10 @@ profiles:
           severity: error
           type: security
           maturity: gold
-          subject:
+          on:
             type: SecurityScheme
             property: type
-          assertions:
+          must:
             enum:
               - oauth2
               - openIdConnect

@@ -4,7 +4,7 @@ This is a sample central config repo for `specmatic-linter`.
 
 Config:
 
-- `configs/specmatic-linter.yaml`
+- `specmatic-linter.yaml`
 
 Profiles:
 
@@ -16,4 +16,5 @@ The repo contains:
 
 - reusable configurable rules in the root `rules` inventory
 - reusable JS rules from `plugins/platform-rules`
+- built-in rulesets activated per profile via `rules.extends`
 - profile-specific built-in overrides, severities, and maturity levels
