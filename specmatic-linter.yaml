@@ -1,6 +1,3 @@
-plugins:
-  - ./plugins/platform-rules/index.js
-
 rules:
   rule/parameter-description-required:
     severity: error
@@ -36,21 +33,6 @@ rules:
       pattern: "^(?!X-API-Version$).*$"
     message: "Platform standard: Avoid the legacy X-API-Version header."
 
-  platform/operation-id-convention:
-    severity: warn
-    type: operations
-    maturity: bronze
-
-  platform/error-response-problem-json:
-    severity: error
-    type: operations
-    maturity: silver
-
-  platform/pagination-bounds:
-    severity: warn
-    type: parameters
-    maturity: bronze
-
 profiles:
   default:
     rules:
@@ -64,8 +46,6 @@ profiles:
       include:
         - rule/parameter-description-required
         - rule/security-scheme-modern
-        - platform/operation-id-convention
-        - platform/error-response-problem-json
         - info-license
         - info-contact
         - operation-summary
@@ -81,7 +61,6 @@ profiles:
       include:
         - rule/parameter-description-required
         - rule/no-legacy-version-header
-        - platform/operation-id-convention
       exclude:
         - info-contact
         - info-license
@@ -96,17 +75,7 @@ profiles:
     extends:
       - public-api
     rules:
-      include:
-        - platform/pagination-bounds
       override:
-        platform/operation-id-convention:
-          severity: error
-          type: operations
-          maturity: bronze
-        platform/error-response-problem-json:
-          severity: error
-          type: operations
-          maturity: gold
         security-defined:
           severity: error
           type: security
